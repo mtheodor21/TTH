@@ -1,0 +1,25 @@
+{
+  "name": "tikitaka-hub--proiect-tw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtheodor21/https---github.com-mtheodor21-TikiTakaHub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mtheodor21/https---github.com-mtheodor21-TikiTakaHub/issues"
+  },
+  "homepage": "https://github.com/mtheodor21/https---github.com-mtheodor21-TikiTakaHub#readme",
+  "dependencies": {
+    "ejs": "^5.0.1",
+    "express": "^5.2.1"
+  }
+}
