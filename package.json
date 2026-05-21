@@ -11,7 +11,7 @@
     "url": "git+https://github.com/mtheodor21/https---github.com-mtheodor21-TikiTakaHub.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mesaros Theodor Daniel",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/mtheodor21/https---github.com-mtheodor21-TikiTakaHub#readme",
   "dependencies": {
-    "ejs": "^5.0.1",
+    "ejs": "^5.0.2",
     "express": "^5.2.1"
   }
 }

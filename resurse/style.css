@@ -309,3 +309,61 @@ math mn { font-weight: bold; color: var(--border-color); }
     #tab-orar th, #tab-orar td { border: 1px solid black; color: black; }
     .header-zone, .footer-zone { background: transparent; color: black; border: none; margin:0; padding:10px; }
 }
+
+
+.responsive-video {
+    width: 90%;
+    min-width: 280px;
+    max-width: 720px;
+    display: block;
+    margin: 0 auto;
+    border: 3px solid #333;
+    border-radius: 8px;
+}
+
+::cue {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+:root {
+    --link-visited-color: #7d3c98; 
+    --pata-gradient: rgba(46, 204, 113, 0.5);
+}
+
+
+a:visited {
+    color: var(--link-visited-color);
+}
+
+a[href^="http"]::before {
+    content: "⮳ ";
+    font-size: 1.5em; 
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+
+a[href^="http"]:hover::before {
+    color: #e74c3c;
+}
+
+main a:not([href^="http"]) {
+    position: relative;
+    text-decoration: none;
+    color: #2980b9;
+    padding: 3px 8px;
+    background-image: radial-gradient(circle, var(--pata-gradient) 0%, var(--pata-gradient) 40%, transparent 80%, transparent 100%);
+    background-position: center;
+    background-size: 0% 0%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s ease;
+}
+
+
+main a:not([href^="http"]):hover {
+    background-size: 100% 100%;
+}
+main a:active {
+    border: 2px dashed #2c3e50;
+}
