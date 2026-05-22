@@ -2,12 +2,30 @@
 <html lang="ro">
 <head>
     <%- include('../fragmente/head') %>
+    <link rel="stylesheet" href="/resurse/css/galerie_animata.css">
 </head>
 <body>
     <%- include('../fragmente/header') %>
-    <main>
-        <h2>Galerie Dinamică</h2>
+    
+    <main class="container my-5">
+        <h1 class="text-center mb-4">Galerie Animată (Dinamică)</h1>
+        <p class="text-center">Număr de imagini generate aleator la această accesare: <b><%= imagini.length %></b></p>
+        
+        <div class="container-animat">
+            <div class="grid-animat">
+                <% if (locals.imagini && imagini.length > 0) { %>
+                    <% imagini.forEach((img) => { %>
+                        <figure>
+                            <img src="/<%= cale_galerie %>/<%= img.cale_imagine %>" alt="<%= img.titlu %>">
+                        </figure>
+                    <% }) %>
+                <% } else { %>
+                    <p class="text-center">Nu există imagini pentru galeria animată.</p>
+                <% } %>
+            </div>
+        </div>
     </main>
+
     <%- include('../fragmente/footer') %>
 </body>
 </html>

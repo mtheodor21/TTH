@@ -2,11 +2,42 @@
 <html lang="ro">
 <head>
     <%- include('../fragmente/head') %>
+    <link rel="stylesheet" href="/resurse/css/custom.css">
 </head>
 <body>
     <%- include('../fragmente/header') %>
-    <main>
-        <h2>Galerie Statică</h2>
+    <main class="container my-5">
+        <h1 class="reflexie-apa mb-5">Galerie Foto Statică</h1>
+        
+        <h3 class="text-center mt-5">Efect Duotone</h3>
+        <div class="duotone-box mb-5"></div>
+        <hr class="custom-hr">
+
+        <div class="galerie-grid">
+            <% if (locals.imagini && imagini.length > 0) { %>
+                <% imagini.forEach((img) => { 
+                    let numeBaza = img.cale_imagine.substring(0, img.cale_imagine.lastIndexOf('.'));
+                    let extensie = img.cale_imagine.substring(img.cale_imagine.lastIndexOf('.'));
+                %>
+                    <figure>
+                        <picture>
+                            <source media="(max-width: 576px)" srcset="/<%= cale_galerie %>/<%= numeBaza %>-mic<%= extensie %>">
+                            <source media="(max-width: 992px)" srcset="/<%= cale_galerie %>/<%= numeBaza %>-mediu<%= extensie %>">
+                            <img src="/<%= cale_galerie %>/<%= img.cale_imagine %>" alt="<%= img.descriere %>" title="<%= img.titlu %>">
+                        </picture>
+                        <figcaption><%= img.descriere %></figcaption>
+                    </figure>
+                <% }) %>
+            <% } else { %>
+                <p>Nicio imagine disponibilă în acest interval orar.</p>
+            <% } %>
+        </div>
+
+        <hr class="custom-hr">
+        <section class="text-pe-coloane mt-5">
+            <p>TikiTaka Hub nu este doar un magazin online, ci o destinație dedicată tuturor pasionaților de fotbal. Am creat acest spațiu virtual din dorința de a oferi echipamente de top celor care respiră fotbal în fiecare zi. De la ghete concepute pentru precizie, până la mingi testate pe cele mai mari stadioane ale lumii, tot ce găsești aici a fost selectat pentru a te ajuta să îți atingi potențialul maxim pe teren. Suntem aici să susținem spiritul de echipă și dragostea pentru frumosul joc.</p>
+            <p> Performanța pe teren începe întotdeauna cu echipamentul potrivit. La TikiTaka Hub, înțelegem că fiecare detaliu contează – de la materialul ușor al tricourilor care permite o respirație optimă a pielii, până la crampoanele ghețelor care îți oferă tracțiunea necesară în momentele critice ale meciului. Nu facem compromisuri la capitolul calitate, pentru că știm că un jucător încrezător în echipamentul său este un jucător care poate schimba soarta unei partide în orice secundă.</p>
+        </section>
     </main>
     <%- include('../fragmente/footer') %>
 </body>

@@ -1,0 +1,20 @@
+{
+  "cale_galerie": "imagini/galerie",
+  "imagini": [
+    { "cale_imagine": "poza1.jpg", "titlu": "Tricou FC Barcelona", "descriere": "Tricou oficial de joc FC Barcelona", "timp": "08:00-14:00", "galerie-animata": true, "alt": "Tricou oficial de joc FC Barcelona, echipat cu tehnologie de respirație" },
+    { "cale_imagine": "poza2.jpg", "titlu": "Minge UCL", "descriere": "Minge oficială Liga Campionilor", "timp": "10:00-20:00", "galerie-animata": true, "alt": "Minge de fotbal oficială UEFA Champions League albă cu steluțe" },
+    { "cale_imagine": "poza3.jpg", "titlu": "Ghete Nike Mercurial", "descriere": "Ghete viteză teren sintetic", "timp": "00:00-23:59", "galerie-animata": true, "alt": "Ghete de fotbal Nike Mercurial portocalii pentru viteză pe teren sintetic" },
+    { "cale_imagine": "poza4.jpg", "titlu": "Mănuși Portar", "descriere": "Mănuși cu aderență maximă", "timp": "09:00-18:00", "galerie-animata": true, "alt": "Mănuși de portar profesionale cu palmă din latex pentru aderență" },
+    { "cale_imagine": "poza5.jpg", "titlu": "Tricou Real Madrid", "descriere": "Tricou ediție limitată", "timp": "12:00-23:00", "galerie-animata": true, "alt": "Tricou de fotbal Real Madrid, modelul ediție limitată alb-auriu" },
+    { "cale_imagine": "poza6.jpg", "titlu": "Jambiere Roșii", "descriere": "Jambiere profesionale fotbal", "timp": "06:00-12:00", "galerie-animata": true, "alt": "Pereche de jambiere roșii din material elastic pentru protecție" },
+    { "cale_imagine": "poza7.jpg", "titlu": "Fluier Arbitru", "descriere": "Fluier profesional Fox 40", "timp": "00:00-23:59", "galerie-animata": true, "alt": "Fluier negru profesional pentru arbitri de fotbal" },
+    { "cale_imagine": "poza8.jpg", "titlu": "Apărători Carbon", "descriere": "Apărători tibie ultra-ușoare", "timp": "07:00-19:00", "galerie-animata": true, "alt": "Apărători de tibie din fibră de carbon ușoară și rezistentă" },
+    { "cale_imagine": "poza9.jpg", "titlu": "Tricou Bayern Munchen", "descriere": "Tricou original meci", "timp": "15:00-23:59", "galerie-animata": true, "alt": "Tricou de joc Bayern Munchen roșu cu dungi albe" },
+    { "cale_imagine": "poza10.jpg", "titlu": "Minge Antrenament", "descriere": "Minge durabilă antrenament", "timp": "09:00-17:00", "galerie-animata": true, "alt": "Minge de fotbal pentru antrenament zilnic, foarte rezistentă" },
+    { "cale_imagine": "poza11.jpg", "titlu": "Echipament Arbitru", "descriere": "Set complet arbitraj", "timp": "00:00-23:59", "galerie-animata": true, "alt": "Echipament complet pentru arbitri cu cartonase și accesorii" },
+    { "cale_imagine": "poza12.jpg", "titlu": "Ghete Puma Future", "descriere": "Ghete fotbal control", "timp": "11:00-22:00", "galerie-animata": true, "alt": "Ghete de fotbal Puma Future verzi pentru controlul mingii" },
+    { "cale_imagine": "poza13.jpg", "titlu": "Ghete Adidas Predator", "descriere": "Ghete precizie", "timp": "08:00-16:00", "galerie-animata": true, "alt": "Ghete de fotbal Adidas Predator negre cu elemente de precizie" },
+    { "cale_imagine": "poza14.jpg", "titlu": "Minge Euro 2024", "descriere": "Minge oficială campionat", "timp": "00:00-23:59", "galerie-animata": true, "alt": "Minge oficială Euro 2024 cu design grafic colorat" },
+    { "cale_imagine": "poza15.jpg", "titlu": "Geantă Echipament", "descriere": "Geantă mare compartimentată", "timp": "09:00-15:00", "galerie-animata": true, "alt": "Geantă de sport mare cu compartiment separat pentru ghete de fotbal" }
+  ]
+}
