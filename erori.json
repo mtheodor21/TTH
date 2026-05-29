@@ -1,30 +1,30 @@
 {
   "cale_baza": "resurse/imagini/erori",
   "eroare_default": {
-    "titlu": "Eroare Generică",
-    "text": "A apărut o problemă neașteptată pe server.",
+    "titlu": "Eroare Generica",
+    "text": "A aparut o problemă neasteptata pe server.",
     "imagine": "default.png"
   },
   "info_erori": [
     {
       "identificator": 404,
       "status": true,
-      "titlu": "Pagină inexistentă",
-      "text": "Ne pare rău, dar pagina pe care o cauți nu există.",
+      "titlu": "Pagina inexistenta",
+      "text": "Ne pare rau, dar pagina pe care o cauti nu exista.",
       "imagine": "404.png"
     },
     {
       "identificator": 403,
       "status": true,
       "titlu": "Acces Interzis",
-      "text": "Nu ai permisiunea necesară pentru a vizualiza acest conținut.",
+      "text": "Nu ai permisiunea necesara pentru a vizualiza acest continut.",
       "imagine": "403.png"
     },
     {
       "identificator": 400,
       "status": true,
-      "titlu": "Cerere Invalidă",
-      "text": "Fișierele sursă .ejs nu pot fi accesate direct.",
+      "titlu": "Cerere Invalida",
+      "text": "Fisierele sursa .ejs nu pot fi accesate direct.",
       "imagine": "400.png"
     }
   ]

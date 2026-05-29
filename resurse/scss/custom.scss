@@ -1,39 +1,35 @@
-// ==========================================
-// 1. CUSTOMIZARE VARIABILE BOOTSTRAP
-// ==========================================
-$primary: #2b7a78;    // Tema cromatică 1 (Verde sportiv intens)
-$secondary: #17252a;  // Tema cromatică 2 (Bleomaren închis elegant)
+
+$primary: #2b7a78;    
+$secondary: #17252a;  
 $success: #3aafa9;
 
-$body-color: #222222;        // Familia de culori implicită pentru text
-$btn-primary-color: #ffffff; // Culoare font dintr-un buton primar
+$body-color: #222222;        
+$btn-primary-color: #ffffff; 
 
-// Dimensiuni diferite de ecran pentru ecrane medii și mari (Breakpoints personalizate)
+
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
-  md: 780px,    // Schimbat de la valoarea implicită de 768px
-  lg: 1024px,   // Schimbat de la valoarea implicită de 992px
+  md: 780px,    
+  lg: 1024px,   
   xl: 1200px,
   xxl: 1400px
 );
 
-$border-radius: 12px; // Dimensiunea razelor de border global
+$border-radius: 12px; 
 
-// Dimensiunea heading-urilor (h1, h2, etc.)
+
 $h1-font-size: 2.7rem;
 $h2-font-size: 2.2rem;
 
-$font-family-base: 'Poppins', 'Segoe UI', Arial, sans-serif; // Familia de font implicită
+$font-family-base: 'Poppins', 'Segoe UI', Arial, sans-serif; 
 
-$link-color: $success; // Extra variabilă aleasă de noi
+$link-color: $success; 
 
-// Importăm structura Bootstrap din node_modules
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-// ==========================================
-// 2. CORECTARE BOOTSTRAP (Păstrarea aspectului inițial)
-// ==========================================
+
 body {
     margin: 0;
     padding: 0;
@@ -42,27 +38,22 @@ main {
     padding: 20px;
 }
 
-// ==========================================
-// 3. EFECTE CSS CORECTE ȘI RESPONSIVE
-// ==========================================
 
-// Schimbarea afișării textului selectat (::selection)
 ::selection {
     background-color: $primary;
     color: #ffffff;
 }
 
-// Scrierea textului pe coloane (column-count)
+
 .sectiune-text-coloane {
     column-count: 3;
     column-rule: 2px dashed $primary;
     column-gap: 25px;
     @media (max-width: 780px) {
-        column-count: 1; // Pe ecran mic și mediu se afișează pe o singură coloană
+        column-count: 1; 
     }
 }
 
-// Text responsive animat recurent (Keyframes)
 .container-text-plimbator {
     width: 100%;
     overflow: hidden;
@@ -83,7 +74,7 @@ main {
     100% { transform: translate3d(-100%, 0, 0); }
 }
 
-// Stilizare <hr> realizată exclusiv prin gradiente decalate repetate orizontal
+
 hr.custom-hr {
     border: none;
     height: 12px;
@@ -96,7 +87,6 @@ hr.custom-hr {
     margin: 30px 0;
 }
 
-// Efect Duotone cu pseudo-elemente și mix-blend-mode (trece în grayscale la hover)
 .duotone-box {
     position: relative;
     display: inline-block;
@@ -124,7 +114,6 @@ hr.custom-hr {
     }
 }
 
-// Reflexie text cu unde eliptice animate pe hover
 .reflexie-container {
     text-align: center;
     margin: 40px 0;
@@ -156,40 +145,37 @@ hr.custom-hr {
     100% { transform: scaleY(-1) translateY(2px) skewX(2deg); }
 }
 
-// ==========================================
-// 4. STRUCTURĂ ȘI TRANZIȚIE GALERIE STATICĂ (GRID)
-// ==========================================
 .galerie-grid {
     display: grid;
     gap: 20px;
     padding: 20px 0;
     counter-reset: css-counter;
-    grid-template-columns: 1fr; // Mobil (o coloană)
+    grid-template-columns: 1fr; 
 
     @media (min-width: 780px) {
-        grid-template-columns: repeat(2, 1fr); // Ecran mediu (două coloane)
+        grid-template-columns: repeat(2, 1fr); 
     }
     @media (min-width: 1024px) {
-        grid-template-columns: repeat(3, 1fr); // Ecran mare (grid 3x4)
+        grid-template-columns: repeat(3, 1fr); 
     }
 
     figure {
         margin: 0; position: relative; overflow: hidden; border-radius: $border-radius; border: 2px solid $secondary;
         picture img {
             width: 100%; height: 240px; object-fit: cover; display: block;
-            transform-origin: bottom center; // Alinierea graniței de jos cerută în enunț
-            transition: transform 1.25s ease-in-out; // Tranziția durează exact o secundă și un sfert (1.25s)
+            transform-origin: bottom center; 
+            transition: transform 1.25s ease-in-out;
         }
         figcaption {
             background-color: rgba($secondary, 0.9); color: white; text-align: center; padding: 10px; transition: all 1.25s ease-in-out;
             &::before {
                 counter-increment: css-counter;
-                content: counter(css-counter, lower-alpha) ") "; // Indexare automată cu litere mici (counter css)
+                content: counter(css-counter, lower-alpha) ") "; 
                 font-weight: bold; color: $success;
             }
         }
         &:hover {
-            picture img { transform: scale(1.3); } // Se mărește cu 30% și translează natural în sus datorită origin-ului
+            picture img { transform: scale(1.3); } 
             figcaption { background-color: $primary; color: white; }
         }
     }

@@ -23,7 +23,10 @@
                         <picture>
                             <source media="(max-width: 576px)" srcset="/<%= cale_galerie %>/<%= numeBaza %>-mic<%= extensie %>">
                             <source media="(max-width: 992px)" srcset="/<%= cale_galerie %>/<%= numeBaza %>-mediu<%= extensie %>">
-                            <img src="/<%= cale_galerie %>/<%= img.cale_imagine %>" alt="<%= img.descriere %>" title="<%= img.titlu %>">
+                            <img src="/<%= cale_galerie %>/<%= img.cale_imagine %>" alt="<%= img.descriere %>" title="<%= img.titlu %>"
+    
+                             alt="<%= img.alt %>" 
+                            onerror="this.onerror=null; this.src='/resurse/imagini/erori/default.png';">
                         </picture>
                         <figcaption><%= img.descriere %></figcaption>
                     </figure>

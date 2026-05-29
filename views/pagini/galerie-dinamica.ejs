@@ -5,23 +5,31 @@
     <link rel="stylesheet" href="/resurse/css/galerie_animata.css">
 </head>
 <body>
-    <%- include('../fragmente/header') %>
-    
-    <main class="container my-5">
-        <h1 class="text-center mb-4">Galerie Animată (Dinamică)</h1>
+    <%- include('../fragmente/head') %>
+
+<main class="container my-5">
+    <h1 class="text-center mb-4">Galerie Animată (Dinamică)</h1>
+
+    <% if (locals.imagini && locals.imagini.length > 0) { %>
         <p class="text-center">Număr de imagini generate aleator la această accesare: <b><%= imagini.length %></b></p>
         
         <div class="container-animat">
             <div class="grid-animat">
-                <% if (locals.imagini && imagini.length > 0) { %>
-                    <% imagini.forEach((img) => { %>
-                        <figure>
-                            <img src="/<%= cale_galerie %>/<%= img.cale_imagine %>" alt="<%= img.titlu %>">
-                        </figure>
-                    <% }) %>
-                <% } else { %>
-                    <p class="text-center">Nu există imagini pentru galeria animată.</p>
-                <% } %>
+                <% imagini.forEach(function(img) { %>
+                    <figure>
+                        <img src="/resurse/<%= locals.cale_galerie %>/<%= img.cale_imagine %>" alt="<%= img.alt %>" title="<%= img.descriere %>">
+                        <figcaption><%= img.titlu %></figcaption>
+                    </figure>
+                <% }); %>
+            </div>
+        </div>
+    <% } else { %>
+        <p class="text-center text-danger"><b>Eroare:</b> Nu s-au putut încărca imaginile. Datele nu au ajuns la fișierul EJS.</p>
+    <% } %>
+
+</main>
+
+<%- include('../fragmente/footer') %>
             </div>
         </div>
     </main>

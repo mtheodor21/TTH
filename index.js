@@ -1,19 +1,15 @@
-// Importa modulele necesare pentru server
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const app = express();
 const PORT = 8080;
 const sass = require('sass'); 
-// Setează EJS ca motor de template pentru randarea paginilor
 app.set('view engine', 'ejs');
 
-// Afiseaza caile importante pentru debugging
 console.log("Cale fisier (__filename):", __filename);
 console.log("Cale director (__dirname):", __dirname);
 console.log("CWD (process.cwd()):", process.cwd());
 
-// Creeaza directoarele necesare dacă nu exista
 const vect_foldere = ["temp", "logs", "backup", "fisiere_uploadate", "resurse/scss", "resurse/css", "backup/resurse/css"];
 for (let folder of vect_foldere) {
     let folderPath = path.join(__dirname, folder);
@@ -60,7 +56,18 @@ function compileazaScss(caleScss, caleCss) {
     
     try {
         
-        const rezCompilare = sass.compile(caleIn, { quietDeps: true });
+        const rezCompilare = sass.compile(caleIn, { 
+    quietDeps: true,
+    silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'if-function']
+});
+        let statScss = fs.statSync(caleIn);
+        if (fs.existsSync(caleOut)) {
+        let statCss = fs.statSync(caleOut);
+        if (statScss.mtime < statCss.mtime) {
+        console.log(`[SCSS] Fișierul ${path.basename(caleIn)} este deja la zi.`);
+        return; 
+    }
+}
         fs.writeFileSync(caleOut, rezCompilare.css);
         console.log(`[SCSS] Compilat: ${path.basename(caleIn)} -> ${path.basename(caleOut)}`);
     } catch (err) {
@@ -88,7 +95,6 @@ fs.watch(global.folderScss, (eventType, filename) => {
 
 global.obGlobal = { obErori: null };
 
-// Functie care initializeaza datele de erori din fisierul JSON
 function initErori() {
     let caleJson = path.join(__dirname, 'erori.json');
     if (!fs.existsSync(caleJson)) {
@@ -97,76 +103,46 @@ function initErori() {
     }
 
     let textJson = fs.readFileSync(caleJson, 'utf8');
-
-    // Valideaza ca nu sunt duplicate de proprietate 'titlu' în JSON
     let blocuriObiecte = textJson.split('}');
     blocuriObiecte.forEach(bucata => {
         let potriviriTitlu = bucata.match(/"titlu"\s*:/g);
         if (potriviriTitlu && potriviriTitlu.length > 1) {
-            console.error("Eroare (Bonus): Proprietatea 'titlu' apare de mai multe ori!");
+            console.error("Eroare: Proprietatea 'titlu' apare de mai multe ori!");
         }
     });
 
     let jsonErori = JSON.parse(textJson);
-
-    // Verifica existenta proprietatilor de baza în JSON
     if (!jsonErori.info_erori || !jsonErori.cale_baza || !jsonErori.eroare_default) {
         console.error("Eroare: Lipsesc proprietăți de bază!");
         process.exit(1);
     }
-
-    // Verifica ca eroarea default are toate campurile necesare
     if (!jsonErori.eroare_default.titlu || !jsonErori.eroare_default.text || !jsonErori.eroare_default.imagine) {
-        console.error("Eroare: Erorii default îi lipsesc sub-proprietăți!");
+        console.error("Eroare: Erorii default îi lipsesc sub-proprietati!");
         process.exit(1);
     }
-
-    // Creeaza calea absoluta catre folderul de baza și verifica dacă exista
     let caleBazaAbsoluta = path.join(__dirname, jsonErori.cale_baza);
     if (!fs.existsSync(caleBazaAbsoluta)) {
         console.error(`Eroare: Folderul ${caleBazaAbsoluta} nu există!`);
         fs.mkdirSync(caleBazaAbsoluta, { recursive: true });
     }
 
-    // Construieste calea absoluta către imaginea erorii default
-    jsonErori.eroare_default.imagine = path.join(caleBazaAbsoluta, jsonErori.eroare_default.imagine);
 
-    // Verifica și marcheaza ID-uri duplicate în lista de erori
-    let setIdent = new Set();
-    jsonErori.info_erori.forEach(err => {
-        if (setIdent.has(err.identificator)) {
-            console.error(`Eroare (Bonus): ID duplicat [${err.identificator}]`);
-        }
-        setIdent.add(err.identificator);
-        // Construiește calea absolută pentru imaginea fiecărei erori
-        err.imagine = path.join(caleBazaAbsoluta, err.imagine);
     });
-
-    // Stochează obiectul erorilor în global
     global.obGlobal.obErori = jsonErori;
 }
 initErori();
 
-// Functie care randeaza o pagina de eroare cu detaliile specifice
 function afisareEroare(res, identificator, titlu, text, imagine) {
-    // Cauta eroarea în lista de erori sau foloseste eroarea default
     let errGasita = global.obGlobal.obErori.info_erori.find(e => e.identificator == identificator);
     let dateEroare = errGasita || global.obGlobal.obErori.eroare_default;
 
-    // Foloseste valorile transmise sau cele din baza de date
-    let titluFinal = titlu || dateEroare.titlu;
+   let titluFinal = titlu || dateEroare.titlu;
     let textFinal = text || dateEroare.text;
 
-    // Extrage doar numele fisierului din cale (nu și directoarele)
-    let numeFisier = dateEroare.imagine.split('\\').pop().split('/').pop();
-
-    // Construieste calea spre imaginea erorii
+    let numeFisier = path.basename(dateEroare.imagine);
     let caleaSprePoza = imagine || `/resurse/imagini/erori/${numeFisier}`;
+    res.status(errGasita?.status ? identificator : 500);
 
-    // Seteaza codul HTTP de status al răspunsului
-    res.status((errGasita && errGasita.status && identificator) ? identificator : 500);
-
-    // Randeaza template-ul pentru pagina de eroare si trimite raspunsul
     res.render('pagini/eroare', {
         titlu: titluFinal,
         text: textFinal,
@@ -175,51 +151,100 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
     });
 }
 
-// Serveste fisiere statice din directorul 'resurse' (imagini, CSS, JS, etc)
 app.use('/resurse', express.static(path.join(__dirname, 'resurse')));
 
-// Ruta pentru favicon - serveste iconul paginii
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'resurse/imagini/favicon/favicon.ico')));
 
 app.get('/galerie', (req, res) => {
     let jsonCale = path.join(__dirname, 'resurse', 'imagini', 'galerie' ,'galerie.json');
     let date = JSON.parse(fs.readFileSync(jsonCale, 'utf8'));
-    res.render('pagini/galerie-statica', { imagini: date.imagini, cale_galerie: date.cale_galerie, ip: req.ip });
+
+    let timpCurent = new Date();
+    let minuteCurente = timpCurent.getHours() * 60 + timpCurent.getMinutes();
+
+    let imaginiFiltrate = date.imagini.filter(img => {
+        
+        let [start, end] = img.timp.split('-'); 
+        
+        let [startOra, startMin] = start.split(':').map(Number);
+        let [endOra, endMin] = end.split(':').map(Number); 
+
+        let minuteStart = startOra * 60 + startMin; 
+        let minuteEnd = endOra * 60 + endMin;       
+        return minuteCurente >= minuteStart && minuteCurente <= minuteEnd;
+    });
+
+    res.render('pagini/galerie-statica', { imagini: imaginiFiltrate, cale_galerie: date.cale_galerie, ip: req.ip });
 });
 
-app.get('/galerie-animata', (req, res) => {
-    let jsonCale = path.join(__dirname, 'resurse','imagini', 'galerie' ,'galerie.json');
-    let date = JSON.parse(fs.readFileSync(jsonCale, 'utf8'));
-    let imaginiAnimate = date.imagini.filter(img => img['galerie-animata'] === true);
-    res.render('pagini/galerie-dinamica', { imagini: imaginiAnimate, cale_galerie: date.cale_galerie, ip: req.ip });
+app.get('/galerie-dinamica', (req, res) => {
+    try {
+        let jsonCale = path.join(__dirname, 'resurse', 'imagini', 'galerie', 'galerie.json');
+        
+        if (!fs.existsSync(jsonCale)) {
+            return res.send(`<b>DIAGNOSTIC:</b> Fișierul JSON NU există la calea: <br><small>${jsonCale}</small>`);
+        }
+
+        let dateRaw = fs.readFileSync(jsonCale, 'utf8');
+        let date = JSON.parse(dateRaw);
+        
+        let toateImaginile = date.imagini.filter(img => img['galerie-animata'] === true);
+        
+        const optiuni = [9, 12, 15];
+        const nrImagini = optiuni[Math.floor(Math.random() * optiuni.length)];
+        let imaginiAnimate = toateImaginile.slice(0, nrImagini);
+
+        let caleScss = path.join(global.folderScss, 'galerie_animata.scss');
+        let caleCss = path.join(global.folderCss, 'galerie_animata.css');
+        if (fs.existsSync(caleScss)) {
+            let continutScss = fs.readFileSync(caleScss, 'utf8');
+            let scssInjectat = `$nr-imagini: ${imaginiAnimate.length};\n` + continutScss;
+            
+            try {
+                const rezCompilare = sass.compileString(scssInjectat, { 
+                    quietDeps: true,
+                    silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'if-function']
+                });
+                fs.writeFileSync(caleCss, rezCompilare.css);
+            } catch(scssErr) {
+                return res.send(`<b>DIAGNOSTIC:</b> Eroare de sintaxă în fișierul galerie_animata.scss: <br><pre>${scssErr.message}</pre>`);
+            }
+        } else {
+            return res.send(`<b>DIAGNOSTIC:</b> Fișierul SCSS obligatoriu NU există la calea: <br><small>${caleScss}</small>`);
+        }
+
+    
+        res.render('pagini/galerie-dinamica', { 
+            imagini: imaginiAnimate, 
+            cale_galerie: date.cale_galerie, 
+            ip: req.ip 
+        });
+    } catch (err) {
+        return res.send(`<b>DIAGNOSTIC:</b> Eroare generală neprevăzută: <br><pre>${err.message}</pre>`);
+    }
 });
-// Blocheaza accesul la directoare - previne listarea fisierelor din folder
+
 app.get(/^\/resurse\/[a-zA-Z0-9_-]+\/$/, (req, res) => afisareEroare(res, 403));
-// Blocheaza accesul direct la fisierele .ejs (template-uri)
+
 app.get(/\.ejs$/, (req, res) => afisareEroare(res, 400));
 
-// Ruta pentru pagina de start (/)
+
 app.get(['/', '/index', '/home'], (req, res) => {
     res.render('pagini/index', { ip: req.ip });
 });
  
-// Ruta dinamica - renderizeaza orice pagină din directorul views/pagini
 app.get('/:pagina', (req, res, next) => {
     let paginaCere = req.params.pagina;
-    // Daca cererea contine punct, o paseaza mai departe (nu e o pagina valida)
     if (paginaCere.includes('.')) {
         return next();
     }
 
-    // Incerca sa randeze template-ul EJS pentru pagina solicitata
     res.render('pagini/' + paginaCere, { ip: req.ip }, function(err, html) {
         if (err) return err.message.startsWith("Failed to lookup view") ? afisareEroare(res, 404) : afisareEroare(res, null, "Eroare Server", err.message);
         res.send(html);
     });
 });
-
-// Ruta catch-all - pentru cererile care nu au putut fi procesate (404)
 app.use((req, res) => afisareEroare(res, 404));
-
-// Porneste serverul pe portul specificat
 app.listen(PORT, () => console.log(`Serverul rulează la: http://localhost:${PORT}`));
+
+

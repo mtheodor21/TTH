@@ -1,6 +1,3 @@
-// resurse/scss/galerie_animata.scss
-// Notă: Variabila $nr-imagini este injectată automat la începutul fișierului de către serverul Node.js!
-
 .galerie-animata-container {
   width: 450px;
   height: 320px;
@@ -10,16 +7,11 @@
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   
-  // Border image customizat conform cerinței
   border: 12px solid transparent;
   border-image: repeating-linear-gradient(45deg, #2b7a78, #2b7a78 15px, #3aafa9 15px, #3aafa9 30px) 15 round;
-
-  // Oprirea animației când cursorul este peste galerie
   &:hover .galerie-animata-grid {
     animation-play-state: paused;
   }
-
-  // Nu se afișează pe ecrane medii și mici (max-width formatat pe baza breakpoint-ului customizat)
   @media (max-width: 1023px) {
     display: none;
   }
@@ -28,12 +20,9 @@
 .galerie-animata-grid {
   display: grid;
   grid-template-columns: repeat(3, 100%);
-  // Rândurile se adaptează dinamic: numărul total împărțit la cele 3 coloane ale grid-ului n*3
   grid-template-rows: repeat(calc(#{$nr-imagini} / 3), 100%);
   width: 100%;
   height: 100%;
-  
-  // Animație continuă cu direcție alternată (alternate infinite)
   animation: plimbare-rotatie-galerie calc(#{$nr-imagini} * 3s) alternate infinite ease-in-out;
 }
 
@@ -49,27 +38,24 @@
   }
 }
 
-// Generarea automată a cadrelor cheie (keyframes) folosind structura @for din SASS
 @keyframes plimbare-rotatie-galerie {
   @for $i from 0 to $nr-imagini {
     $linie: floor(calc($i / 3));
     $coloana: $i % 3;
     
-    // Logica de șerpuire (layout continuu n*3): rândurile impare merg de la dreapta la stânga
+    
     @if $linie % 2 != 0 {
       $coloana: 2 - $coloana;
     }
     
-    // Calculul procentelor din animație
     $start-procent: calc($i * 100 / $nr-imagini);
     $pauza-procent: calc(($i + 0.75) * 100 / $nr-imagini);
     
-    // Starea de staționare a imaginii curente
     #{$start-procent}%, #{$pauza-procent}% {
       transform: translate(calc(-100% * #{$coloana}), calc(-100% * #{$linie})) rotate(0deg);
     }
     
-    // Efectul de rotație centrată în timpul tranziției către următoarea poziție
+  
     @if $i < $nr-imagini - 1 {
       $tranzitie-procent: calc(($i + 0.92) * 100 / $nr-imagini);
       #{$tranzitie-procent}% {

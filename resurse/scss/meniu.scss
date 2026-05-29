@@ -15,28 +15,28 @@ $highlight: var(--highlight-color);
 }
 
 #main-nav {
-  position: relative;
-  width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 10px;
-
+  align-items: center;            
+  width: 100%;
 
   .hamburger {
     display: none;
     cursor: pointer;
-    padding: 10px;
+    z-index: 1000;
 
     .burger-container {
-      position: relative;
       width: 30px;
-      height: 24px;
+      height: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
 
       .burger-bar {
-        position: absolute;
+       
         left: 0;
         width: 100%;
-        height: 4px;
+        height: 3px;
         background-color: $nav-text;
         border-radius: 2px;
 
@@ -50,9 +50,8 @@ $highlight: var(--highlight-color);
   #menu-toggle { display: none; }
 
   ul.menu {
-    @extend %reset-list;
     display: flex;
-    gap: 30px;
+    gap: 20px;
     background-color: rgba(0,0,0,0.2);
     padding: 10px 20px;
     border-radius: 8px;
@@ -130,12 +129,48 @@ $highlight: var(--highlight-color);
 
 
 @media (max-width: 600px) {
+  
+ 
   #main-nav .hamburger {
+    display: block; 
+    
     @for $i from 1 through 3 {
       .burger-bar:nth-child(#{$i}) {
         animation: animatieHamburger 0.6s ease forwards;
         animation-delay: #{$i * 300}ms;
       }
     }
+  }
+
+  
+  ul.menu {
+    display: none; 
+    flex-direction: column;
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background-color: $nav-bg;
+    padding: 20px;
+    z-index: 999;
+  }
+
+  
+  #menu-toggle:checked ~ ul.menu {
+    display: flex; 
+  }
+
+  
+  ul.submenu {
+    position: static !important; 
+    transform-origin: left !important; 
+    transform: scaleX(0) !important; 
+    border: none !important;
+    padding-left: 20px;
+  }
+
+
+  ul.menu > li:hover ul.submenu {
+    transform: scaleX(1) !important;
   }
 }
