@@ -1,0 +1,163 @@
+<%- include("../fragmente/head") %>
+<%- include("../fragmente/header") %>
+
+<main class="container mt-4 mb-5">
+    
+    <section id="filtre" class="container-filtre" style="margin-bottom: 20px; padding: 20px; border: 1px solid var(--color-border, #ccc); border-radius: 8px; background-color: var(--card-bg, #f8f9fa);">
+        <h2 class="mb-4">Filtre Echipamente</h2>
+
+        <% if (locals.filtre && Object.keys(filtre).length > 0) { %>
+        <!-- Partea ta originală de filtre (1-8) rămâne complet neatinsă aici -->
+        <div class="row g-3 align-items-center">
+            <!-- 1. INPUT TEXT -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="w-100">Căutare (Nume / Culoare):
+                    <input type="text" id="inp-text" class="form-control" placeholder="ex. <%= filtre.exempluNume %>, <%= filtre.exempluCuloare %>...">
+                </label>
+            </div>
+
+            <!-- 2. INPUT RANGE -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="w-100 d-flex flex-column">
+                    <span>Preț maxim: <span id="infoRange" style="font-weight: bold; margin-left: 5px;"><%= filtre.pretMax %></span> Lei</span>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <small><%= filtre.pretMin %></small>
+                        <input type="range" id="inp-pret" class="form-range" min="<%= filtre.pretMin %>" max="<%= filtre.pretMax %>" value="<%= filtre.pretMax %>" step="10">
+                        <small><%= filtre.pretMax %></small>
+                    </div>
+                </label>
+            </div>
+
+            <!-- 3. DATALIST -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="w-100">Tip Teren:
+                    <input list="lista-teren" id="inp-datalist" class="form-control" placeholder="Alege teren...">
+                    <datalist id="lista-teren">
+                        <% for(let teren of filtre.terenuri) { %>
+                            <option value="<%= teren %>"></option>
+                        <% } %>
+                    </datalist>
+                </label>
+            </div>
+
+            <!-- 4. TEXTAREA -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="form-floating w-100">
+                    <textarea id="inp-descriere" class="form-control h-100" placeholder="ex: <%= filtre.exempluDescriere %>..."></textarea>
+                    <label for="inp-descriere">Cuvinte în descriere</label>
+                    <div class="invalid-feedback">Cifrele nu sunt permise!</div>
+                </div>
+            </div>
+
+            <!-- 5. RADIO BUTTONS -->
+            <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                <fieldset class="w-100" style="border: 1px solid #0d6efd; padding: 10px; border-radius: 5px; margin: 0;">
+                    <legend style="padding: 0 5px; font-weight: bold; font-size: 1rem; float: none; width: auto; margin-bottom: 0;">Categorie Produs:</legend>
+                    <div class="btn-group w-100 mt-2 flex-wrap" role="group">
+                        <input type="radio" class="btn-check" name="gr_rad" id="i_rad0" value="toate" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="i_rad0">Toate</label>
+
+                        <% filtre.categorii.forEach((cat, index) => { %>
+                            <input type="radio" class="btn-check" name="gr_rad" id="i_rad<%= index + 1 %>" value="<%= cat %>" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="i_rad<%= index + 1 %>" style="text-transform: capitalize;"><%= cat %></label>
+                        <% }) %>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- 6. CHECKBOX-URI -->
+            <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                <fieldset class="w-100" style="border: 1px solid #198754; padding: 10px; border-radius: 5px; margin: 0;">
+                    <legend style="padding: 0 5px; font-weight: bold; font-size: 1rem; float: none; width: auto; margin-bottom: 0;">Nivel (Subcategorie):</legend>
+                    <div class="btn-group w-100 mt-2 flex-wrap" role="group">
+                        <% filtre.subcategorii.forEach((subcat, index) => { %>
+                            <input type="checkbox" class="btn-check chk-subcategorie" id="chk<%= index + 1 %>" value="<%= subcat %>" checked>
+                            <label class="btn btn-outline-success" for="chk<%= index + 1 %>" style="text-transform: capitalize;"><%= subcat %></label>
+                        <% }) %>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- 7. SELECT SIMPLU -->
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="w-100">Greutate max:
+                    <select id="inp-categorie" class="form-select">
+                        <option id="sel-toate" selected value="toate">Oricare</option>
+                        <option value="<%= Math.round(filtre.greutateMax * 0.33) %>">Sub <%= Math.round(filtre.greutateMax * 0.33) %>g</option>
+                        <option value="<%= Math.round(filtre.greutateMax * 0.66) %>">Sub <%= Math.round(filtre.greutateMax * 0.66) %>g</option>
+                        <option value="<%= filtre.greutateMax %>">Sub <%= filtre.greutateMax %>g</option>
+                    </select>
+                </label>
+            </div>
+
+            <!-- 8. SELECT MULTIPLU -->
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="w-100 d-flex flex-column">EXCLUDE culori:
+                    <select id="inp-materiale" class="form-select mt-1" multiple size="3">
+                        <% for(let culoare of filtre.culori) { %>
+                            <option value="<%= culoare %>" style="text-transform: capitalize;"><%= culoare %></option>
+                        <% } %>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- BONUS 8: Selecturile de Sortare adăugate aici -->
+        <hr class="my-4">
+        <h5 class="mb-3 text-info"><i class="bi bi-cpu"></i> Filtrare și Sortare pe Server (Bonus 8 & 10)</h5>
+        <div class="row g-3 align-items-end mb-4">
+            <div class="col-md-3">
+                <label class="fw-bold small text-muted mb-1">Prima Cheie:</label>
+                <select id="sort-key-1" class="form-select border-info">
+                    <option value="pret">Preț</option>
+                    <option value="nume">Nume</option>
+                    <option value="categorie">Categorie</option>
+                    <option value="greutate">Greutate</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="fw-bold small text-muted mb-1">A Doua Cheie:</label>
+                <select id="sort-key-2" class="form-select border-info">
+                    <option value="nume">Nume</option>
+                    <option value="pret">Preț</option>
+                    <option value="categorie">Categorie</option>
+                    <option value="greutate">Greutate</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="fw-bold small text-muted mb-1">Direcție:</label>
+                <select id="sort-dir" class="form-select border-info">
+                    <option value="1">Crescător (A-Z, 0-9)</option>
+                    <option value="-1">Descrescător (Z-A, 9-0)</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button id="btn-fetch-filtre" class="btn btn-info text-white w-100 shadow-sm fw-bold">
+                    <i class="bi bi-cloud-arrow-up"></i> Aplică (Fetch)
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: center;">
+            <button class="btn btn-primary shadow-sm d-none" id="btn-filtreaza"><i class="bi bi-funnel-fill"></i> Filtreaza</button>
+            <button class="btn btn-success shadow-sm" id="btn-calculeaza"><i class="bi bi-calculator"></i> Calcul Suma</button>
+            <button class="btn btn-danger shadow-sm" id="resetare"><i class="bi bi-arrow-counterclockwise"></i> Reseteaza</button>
+        </div>
+    </section>
+
+    <section id="produse">
+        <h3 id="info-afisate" class="text-primary mb-3 fw-bold"></h3>
+        
+        <div class="row g-4 grid-produse" id="grid-produse">
+            <!-- Includem fragmentul izolat creat la Pasul 1 -->
+            <%- include("../fragmente/grid_produse") %>
+        </div>
+        
+        <div id="pagination-container" class="d-flex justify-content-center gap-2 mb-3 mt-4 flex-wrap w-100"></div>
+    </section>
+</main>
+
+<script src="/resurse/js/produse.js"></script>
+<%- include("../fragmente/comparare") %>
+<%- include("../fragmente/footer") %>

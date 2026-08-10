@@ -1,0 +1,122 @@
+<%- include("../fragmente/head") %>
+<%- include("../fragmente/header") %>
+
+<main class="container mt-5 mb-5">
+    <a href="/produse" class="btn btn-outline-secondary mb-4"><i class="bi bi-arrow-left"></i> Înapoi la magazin</a>
+
+    <div class="row g-5">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                
+                <img id="imagine-principala" src="<%- produs.imagini[0] %>" class="card-img-top rounded" alt="<%- produs.nume %>" style="object-fit: contain; max-height: 500px; background-color: #f8f9fa; padding: 20px;">
+                
+                <% if(produs.imagini.length > 1) { %>
+                    <div class="card-footer bg-white border-0 d-flex gap-2 mt-2 p-0">
+                        <% produs.imagini.forEach(img => { %>
+                            <img src="<%- img %>" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" alt="Miniatură" onclick="document.getElementById('imagine-principala').src = this.src">
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1 class="text-primary fw-bold mb-2"><%- produs.nume %></h1>
+            <h3 class="text-success fw-bold mb-4"><%- produs.pret %> Lei</h3>
+
+            <p class="lead mb-4"><%- produs.descriere %></p>
+
+            <h5 class="border-bottom pb-2 mb-3">Specificații Complete</h5>
+            <table class="table table-striped table-hover shadow-sm rounded overflow-hidden">
+                <tbody>
+                    <tr><th>Categorie:</th><td style="text-transform: capitalize;"><%- produs.categorie %></td></tr>
+                    <tr><th>Nivel/Subcategorie:</th><td style="text-transform: capitalize;"><%- produs.subcategorie %></td></tr>
+                    <tr><th>Brand:</th><td style="text-transform: capitalize;"><%- produs.brand %></td></tr>
+                    <tr><th>Greutate:</th><td><%- produs.greutate %> grame</td></tr>
+                    <tr><th>Tip Teren:</th><td style="text-transform: capitalize;"><%- produs.tip_teren %></td></tr>
+                    <tr><th>Culori Disponibile:</th><td style="text-transform: capitalize;"><%- produs.culori.join(', ') %></td></tr>
+                    <tr><th>Pentru Copii:</th><td>
+                        <% if(produs.pentru_copii) { %>
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Da</span>
+                        <% } else { %>
+                            <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Nu</span>
+                        <% } %>
+                    </td></tr>
+                    <tr><th>Data Adăugării:</th>
+                        <td>
+                            <% 
+                            let d = new Date(produs.data_adaugare);
+                            let dataF = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + d.getFullYear();
+                            %>
+                            <%- dataF %>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary btn-lg w-100 shadow mt-3"><i class="bi bi-cart-plus"></i> Adaugă în coș</button>
+            <button class="btn btn-outline-info btn-lg w-100 shadow mt-2 btn-compara" data-id="<%- produs.id %>" data-nume="<%- produs.nume %>"><i class="bi bi-arrow-left-right"></i> Compară produsul</button>
+        </div>
+    </div>
+
+    <!-- BONUS 16: Produse similare -->
+    <% if(locals.similare && locals.similare.length > 0) { %>
+        <hr class="my-5">
+        <h3 class="mb-4">Produse similare din categoria <span style="text-transform: capitalize;"><%- produs.categorie %></span>:</h3>
+        <div class="row g-4">
+            <% for(let sim of similare) { %>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="<%- sim.imagini[0] %>" class="card-img-top p-2" alt="<%- sim.nume %>" style="height: 200px; object-fit: contain;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-primary"><%- sim.nume %></h5>
+                            <p class="card-text text-success fw-bold"><%- sim.pret %> Lei</p>
+                            <a href="/produs/<%- sim.id %>" class="btn btn-sm btn-outline-primary w-100">Vezi detalii</a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
+
+    <!-- BONUS 17: Seturi din care face parte produsul -->
+    <% if (locals.seturiProdus && seturiProdus.length > 0) { %>
+        <hr class="my-5">
+        <h3 class="mb-4 text-secondary"><i class="bi bi-boxes"></i> Părți ale Seturilor Speciale</h3>
+        <p class="text-muted mb-4">Acest produs poate fi cumpărat și mai ieftin dacă îl alegi ca parte din următoarele oferte:</p>
+        
+        <div class="row g-4">
+            <% seturiProdus.forEach(set => { %>
+                <div class="col-12 col-lg-6">
+                    <div class="card border-info shadow-sm h-100">
+                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><%- set.nume_set %></h5>
+                            <span class="badge bg-light text-dark">-<%- set.reducere %>%</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex gap-3 flex-wrap mb-3">
+                                <% set.produse.forEach(p => { %>
+                                    <a href="/produs/<%- p.id %>" title="<%- p.nume %>">
+                                        <img src="<%- p.imagini[0] %>" alt="<%- p.nume %>" class="rounded border" style="width: 70px; height: 70px; object-fit: cover; transition: transform 0.2s;">
+                                    </a>
+                                <% }) %>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end mt-auto border-top pt-3">
+                                <div>
+                                    <small class="text-muted d-block">Preț individual total:</small>
+                                    <span class="text-muted text-decoration-line-through"><%- set.pretInitial.toFixed(2) %> Lei</span>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-success fw-bold d-block">Preț Set:</small>
+                                    <span class="fs-4 fw-bold text-success"><%- set.pretFinal.toFixed(2) %> Lei</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+
+</main>
+<%- include("../fragmente/comparare") %>
+<%- include("../fragmente/footer") %>

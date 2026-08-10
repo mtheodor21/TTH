@@ -5,7 +5,95 @@ $success: #3aafa9;
 
 $body-color: #222222;        
 $btn-primary-color: #ffffff; 
+// =================================
+// CERINȚE ETAPA 6 & BONUS 2 (TEME)
+// =================================
+// 1. TEMA LIGHT (Default)
+:root {
+    --bg-global: #ffffff;
+    --text-global: #222222;
+    --nav-footer-bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --border-color: #dddddd;
+}
 
+// 2. TEMA DARK
+[data-theme="dark"] {
+    --bg-global: #121212;
+    --text-global: #f1f1f1;
+    --nav-footer-bg: #1f1f1f;
+    --card-bg: #2a2a2a;
+    --border-color: #444444;
+}
+
+// 3. TEMA FCSB
+[data-theme="fcsb"] {
+    --bg-global: #002b5e; /* Albastru FCSB */
+    --text-global: #f1f1f1; /* Text alb */
+    --nav-footer-bg: #e30613; /* Rosu FCSB */
+    --card-bg: #003b82; 
+    --border-color: #e30613;
+}
+
+body, main, .zone {
+    background-color: var(--bg-global) !important;
+    color: var(--text-global) !important;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+// Header, Meniu si Footer
+header, footer, nav#main-nav, .submenu {
+    background-color: var(--nav-footer-bg) !important;
+    color: var(--text-global) !important;
+    transition: background-color 0.4s ease;
+}
+
+// Linkurile sa fie vizibile si in dark mode
+body a {
+    color: var(--text-global);
+}
+body a:hover {
+    opacity: 0.8;
+}
+
+// Cardurile produselor / containerelor
+.card, .shadow-sm {
+    background-color: var(--card-bg) !important;
+    color: var(--text-global) !important;
+    border-color: var(--border-color) !important;
+}
+
+// Textele specifice 
+h1, h2, h3, h4, h5, h6, p, address {
+    color: var(--text-global) !important;
+}
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.card { 
+  background-color: var(--card-bg); 
+  border: 1px solid var(--card-border);
+}
+
+// Cerinta: Slider mărit
+$form-range-thumb-width: 1.5rem;
+$form-range-thumb-height: 1.5rem;
+$form-range-thumb-bg: #007bff;
+
+// Cerinta: Butoane customizate (raza si grosime border)
+$btn-border-radius: 12px;
+$btn-border-width: 2px;
+
+// Bonus 18: Animație Produs Nou
+@keyframes pulseBadge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.badge-nou { animation: pulseBadge 1.5s infinite; }
 
 $grid-breakpoints: (
   xs: 0,

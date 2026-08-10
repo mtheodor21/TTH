@@ -1,0 +1,60 @@
+<% 
+const zile=['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'];
+const luni=['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'];
+
+if (locals.produse && produse.length > 0) {
+    for(let prod of produse) {
+        let d = new Date(prod.data_adaugare);
+        let dataFormatata = d.getDate() + ' ' + luni[d.getMonth()] + ' ' + d.getFullYear() + ' (' + zile[d.getDay()] + ')' ;
+%>
+    <article id="elem_<%- prod.id %>" class="col-md-6 col-xl-4 produs <%- prod.categorie %>">
+        <div class="card h-100 shadow-sm info-container" style="border: 1px solid var(--color-border, #ddd);">
+            
+            <div class="card-header text-center bg-transparent border-0 pt-4 position-relative">
+                <% if (prod.esteCelMaiIeftin) { %>
+                    <div class="position-absolute top-0 start-50 translate-middle-x badge bg-danger text-white fs-6 shadow z-2 mt-2 px-3 py-2 rounded-pill" style="white-space: nowrap; border: 2px solid white;">
+                     🔥 Cel mai ieftin (<span style="text-transform: capitalize;"><%- prod.categorie %></span>)
+                    </div>
+                <% } %>
+                <a href="javascript:void(0);" style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#modal-<%- prod.id %>">
+                    <h4 class="nume mb-0"><span class="val-nume text-primary fw-bold"><%- prod.nume %></span></h4>
+                </a>
+                <span class="badge bg-secondary mt-2 val-subcategorie" style="text-transform: capitalize;"><%- prod.subcategorie %></span>
+            </div>
+
+            <div class="card-body">
+                <figure class="text-center mb-3">
+                    <div id="carusel-<%- prod.id %>" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded shadow-sm" style="height: 160px;">
+                            <% for(let i = 0; i < prod.imagini.length; i++) { %>
+                                <div class="carousel-item <%- i === 0 ? 'active' : '' %>" style="height: 100%;">
+                                    <img src="<%- prod.imagini[i] %>" class="d-block w-100" alt="<%- prod.nume %>" style="height: 100%; object-fit: cover;">
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </figure>
+                <p class="descriere text-center small text-muted mb-3"><strong>Descriere:</strong> <span class="val-descriere"><%- prod.descriere %></span></p>
+
+                <table class="info-prod table table-sm table-bordered mb-0" style="font-size: 0.9rem;">
+                    <tbody>
+                        <tr><th class="table-light">Preț</th><td><span class="val-pret fw-bold text-success"><%- prod.pret %></span> lei</td></tr>
+                        <tr><th class="table-light">Greutate</th><td><span class="val-masa"><%- prod.greutate %></span> g</td></tr>
+                        <tr><th class="table-light">Teren</th><td><span class="val-tip_produs" style="text-transform: capitalize;"><%- prod.tip_teren %></span></td></tr>
+                        <tr><th class="table-light">Data adăugării</th><td><time datetime="<%- d.toISOString() %>"><%- dataFormatata %></time></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Butoanele tale de acțiune și Modalul comparare vor rămâne active! -->
+            <div class="product-actions card-footer bg-transparent border-0 pb-3 d-flex gap-2 justify-content-center flex-wrap">
+                <button class="btn btn-sm btn-outline-success btn-pin" title="Păstrează permanent"><i class="bi bi-pin-angle-fill"></i></button>
+                <button class="btn btn-sm btn-outline-warning btn-hide-temp" title="Ascunde temporar"><i class="bi bi-eye-slash-fill"></i></button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-session" title="Șterge sesiune"><i class="bi bi-trash-fill"></i></button>
+                <button class="btn btn-sm btn-outline-info btn-compara" data-id="<%- prod.id %>" data-nume="<%- prod.nume %>" title="Compară acest produs"><i class="bi bi-arrow-left-right"></i></button>
+            </div>
+        </div>
+    </article>
+<% } } else { %>
+    <div class="col-12 alert alert-warning text-center fs-5 mt-4"><i class="bi bi-exclamation-triangle"></i> Niciun produs nu a trecut de filtrele aplicate pe server.</div>
+<% } %>

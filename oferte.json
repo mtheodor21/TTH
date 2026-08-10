@@ -1,0 +1,40 @@
+{
+  "oferte": [
+    {
+      "categorie": "accesorii",
+      "reducere": 20,
+      "data-incepere": "2026-06-03T18:38:06.160Z",
+      "data-finalizare": "2026-06-03T18:40:06.160Z"
+    },
+    {
+      "categorie": "echipament",
+      "reducere": 20,
+      "data-incepere": "2026-06-03T18:36:06.159Z",
+      "data-finalizare": "2026-06-03T18:38:06.159Z"
+    },
+    {
+      "categorie": "accesorii",
+      "reducere": 40,
+      "data-incepere": "2026-06-03T18:34:06.158Z",
+      "data-finalizare": "2026-06-03T18:36:06.158Z"
+    },
+    {
+      "categorie": "echipament",
+      "reducere": 40,
+      "data-incepere": "2026-06-03T18:32:06.151Z",
+      "data-finalizare": "2026-06-03T18:34:06.151Z"
+    },
+    {
+      "categorie": "accesorii",
+      "reducere": 40,
+      "data-incepere": "2026-06-03T18:30:06.148Z",
+      "data-finalizare": "2026-06-03T18:32:06.148Z"
+    },
+    {
+      "categorie": "accesorii",
+      "reducere": 10,
+      "data-incepere": "2026-06-03T18:28:06.133Z",
+      "data-finalizare": "2026-06-03T18:30:06.133Z"
+    }
+  ]
+}

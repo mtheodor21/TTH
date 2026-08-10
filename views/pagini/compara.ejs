@@ -1,0 +1,76 @@
+<%- include("../fragmente/head") %>
+<%- include("../fragmente/header") %>
+
+<main class="container mt-5 mb-5">
+    <h1 class="text-center text-primary mb-5"><i class="bi bi-arrow-left-right"></i> Comparare Echipamente</h1>
+
+    <% if (locals.p1 && locals.p2) { %>
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-bordered table-striped table-hover text-center align-middle mb-0">
+                <thead class="table-primary fs-5">
+                    <tr>
+                        <th style="width: 20%;">Specificație</th>
+                        <th style="width: 40%;"><%- p1.nume %></th>
+                        <th style="width: 40%;"><%- p2.nume %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Imagini -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Imagine</td>
+                        <td><img src="<%- p1.imagini[0] %>" alt="<%- p1.nume %>" style="height: 150px; object-fit: contain;"></td>
+                        <td><img src="<%- p2.imagini[0] %>" alt="<%- p2.nume %>" style="height: 150px; object-fit: contain;"></td>
+                    </tr>
+                    <!-- Preț -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Preț</td>
+                        <td class="fs-5 text-success fw-bold"><%- p1.pret %> Lei</td>
+                        <td class="fs-5 text-success fw-bold"><%- p2.pret %> Lei</td>
+                    </tr>
+                    <!-- Brand -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Brand</td>
+                        <td style="text-transform: capitalize;"><%- p1.brand %></td>
+                        <td style="text-transform: capitalize;"><%- p2.brand %></td>
+                    </tr>
+                    <!-- Categorie -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Tip Produs</td>
+                        <td style="text-transform: capitalize;"><%- p1.categorie %> (<%- p1.subcategorie %>)</td>
+                        <td style="text-transform: capitalize;"><%- p2.categorie %> (<%- p2.subcategorie %>)</td>
+                    </tr>
+                    <!-- Greutate -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Greutate</td>
+                        <td><%- p1.greutate %> g</td>
+                        <td><%- p2.greutate %> g</td>
+                    </tr>
+                    <!-- Teren -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Teren Recomandat</td>
+                        <td style="text-transform: capitalize;"><%- p1.tip_teren %></td>
+                        <td style="text-transform: capitalize;"><%- p2.tip_teren %></td>
+                    </tr>
+                    <!-- Culori -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Culori Disponibile</td>
+                        <td style="text-transform: capitalize;"><%- p1.culori.join(', ') %></td>
+                        <td style="text-transform: capitalize;"><%- p2.culori.join(', ') %></td>
+                    </tr>
+                    <!-- Pentru Copii -->
+                    <tr>
+                        <td class="fw-bold text-secondary">Pentru Copii</td>
+                        <td><%- p1.pentru_copii ? '✅ Da' : '❌ Nu' %></td>
+                        <td><%- p2.pentru_copii ? '✅ Da' : '❌ Nu' %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <div class="alert alert-danger text-center fs-5">
+            Nu au fost selectate două produse valide pentru comparare! Întoarce-te la <a href="/produse">magazin</a>.
+        </div>
+    <% } %>
+</main>
+
+<%- include("../fragmente/footer") %>

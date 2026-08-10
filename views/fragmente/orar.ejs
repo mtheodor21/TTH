@@ -1,0 +1,102 @@
+<!-- Containerul pentru Orar (Poziționat fix, peste orice pagină) -->
+<div id="container-orar" class="card shadow-lg d-none" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; width: 90%; max-width: 350px; border: 3px solid var(--bs-primary);">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+        <h5 class="mb-0 fs-5"><i class="bi bi-clock"></i> Program TikiTaka</h5>
+        <!-- Aici am pus onclick direct pe butonul de X -->
+        <button type="button" class="btn-close btn-close-white" onclick="ascundeOrar()" aria-label="Close"></button>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-bordered mb-0 text-center" id="tabel-orar" style="font-size: 0.9rem;">
+            <thead>
+                <tr class="table-light"><th>Ziua</th><th>Interval</th></tr>
+            </thead>
+            <tbody>
+                <tr data-zi="1"><td>Luni</td><td>09:00 - 18:00</td></tr>
+                <tr data-zi="2"><td>Marți</td><td>09:00 - 18:00</td></tr>
+                <tr data-zi="3"><td>Miercuri</td><td>09:00 - 18:00</td></tr>
+                <tr data-zi="4"><td>Joi</td><td>09:00 - 18:00</td></tr>
+                <tr data-zi="5"><td>Vineri</td><td>09:00 - 16:00</td></tr>
+                <tr data-zi="6"><td>Sâmbătă</td><td>10:00 - 14:00</td></tr>
+                <tr data-zi="0"><td>Duminică</td><td>Închis</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-center fs-5" id="status-firma">
+        <!-- Textul ACUM: DESCHIS/INCHIS se va genera aici din Javascript -->
+    </div>
+</div>
+
+<script>
+    let timerOrar;
+
+    // Funcția care se apelează când dai click în meniu
+    function arataOrar(e) {
+        if(e) e.preventDefault(); // Oprește pagina să sară în sus când dai click pe link
+        console.log("✅ Click înregistrat pe butonul de Orar!");
+
+        const containerOrar = document.getElementById("container-orar");
+        
+        if(!containerOrar) {
+            console.error("❌ Eroare: Containerul orarului nu a fost găsit pe pagină. Verifică footer-ul!");
+            return;
+        }
+
+        containerOrar.classList.remove("d-none"); // Afișăm containerul
+        actualizeazaOrar(); // Calculăm deschis/închis
+
+        // Ascunde-l automat după 10 secunde
+        clearTimeout(timerOrar);
+        timerOrar = setTimeout(() => {
+            ascundeOrar();
+        }, 10000); 
+    }
+
+    // Funcția care ascunde fereastra la click pe "X"
+    function ascundeOrar() {
+        const containerOrar = document.getElementById("container-orar");
+        if(containerOrar) {
+            containerOrar.classList.add("d-none");
+        }
+        clearTimeout(timerOrar);
+    }
+
+    // Funcția de verificare a orei și zilei
+    function actualizeazaOrar() {
+        const now = new Date();
+        const ziCurenta = now.getDay(); 
+        const statusFirma = document.getElementById("status-firma");
+        
+        // Resetăm culorile de pe tabel
+        const randuri = document.querySelectorAll("#tabel-orar tbody tr");
+        randuri.forEach(r => r.classList.remove("table-success", "fw-bold"));
+
+        // Punem culoare doar pe rândul zilei curente
+        const randCurent = document.querySelector(`#tabel-orar tbody tr[data-zi="${ziCurenta}"]`);
+        if(randCurent) {
+            randCurent.classList.add("table-success", "fw-bold");
+        }
+
+        // Verificăm dacă suntem în intervalul orar
+        const ora = now.getHours().toString().padStart(2, '0');
+        const minute = now.getMinutes().toString().padStart(2, '0');
+        const oraText = ora + ":" + minute; 
+        
+        const orarFirma = {
+            1: { start: "09:00", end: "18:00" },
+            2: { start: "09:00", end: "18:00" },
+            3: { start: "09:00", end: "18:00" },
+            4: { start: "09:00", end: "18:00" },
+            5: { start: "09:00", end: "16:00" },
+            6: { start: "10:00", end: "14:00" },
+            0: null // Duminica
+        };
+
+        const orarAzi = orarFirma[ziCurenta];
+        
+        if (orarAzi && oraText >= orarAzi.start && oraText <= orarAzi.end) {
+            statusFirma.innerHTML = "<span class='text-success fw-bold'><i class='bi bi-door-open'></i> ACUM: DESCHIS</span>";
+        } else {
+            statusFirma.innerHTML = "<span class='text-danger fw-bold'><i class='bi bi-door-closed'></i> ACUM: ÎNCHIS</span>";
+        }
+    }
+</script>

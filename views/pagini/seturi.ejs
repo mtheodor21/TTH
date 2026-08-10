@@ -1,0 +1,51 @@
+<%- include("../fragmente/head") %>
+<%- include("../fragmente/header") %>
+
+<main class="container mt-5 mb-5">
+    <h1 class="text-center mb-4 text-primary">Oferte Speciale - Seturi de Produse</h1>
+    <p class="text-center text-muted mb-5">Cumpără echipamente la set și beneficiezi de reducere progresivă (până la 25% discount)!</p>
+
+    <% if (locals.seturi && seturi.length > 0) { %>
+        <div class="row g-4">
+            <% seturi.forEach(set => { %>
+                <div class="col-12">
+                    <div class="card shadow-sm border-primary">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0 fs-4"><i class="bi bi-box-seam"></i> <%- set.nume_set %></h3>
+                            <span class="badge bg-warning text-dark fs-6 rounded-pill">Reducere -<%- set.reducere %>%</span>
+                        </div>
+                        <div class="card-body bg-light">
+                            <p class="card-text text-muted mb-4"><%- set.descriere_set %></p>
+                            
+                            <h5 class="mb-3 text-secondary border-bottom pb-2">Produse incluse în set:</h5>
+                            <div class="row row-cols-2 row-cols-md-4 g-3 mb-4 justify-content-center">
+                                <% set.produse.forEach(prod => { %>
+                                    <div class="col text-center">
+                                        <!-- Produsul este clicabil -->
+                                        <a href="/produs/<%- prod.id %>" class="text-decoration-none text-dark d-block p-2 border rounded bg-white" style="transition: 0.2s;">
+                                            <img src="<%- prod.imagini[0] %>" class="img-fluid rounded mb-2" alt="<%- prod.nume %>" style="height: 100px; object-fit: cover;">
+                                            <h6 class="fs-6 mb-1 text-truncate" title="<%- prod.nume %>"><%- prod.nume %></h6>
+                                            <small class="text-muted"><%- prod.pret %> Lei</small>
+                                        </a>
+                                    </div>
+                                <% }) %>
+                            </div>
+
+                            <div class="d-flex justify-content-end align-items-center bg-white p-3 rounded border">
+                                <div class="text-end me-4">
+                                    <small class="text-muted text-decoration-line-through d-block">Preț individual total: <%- set.pretInitial.toFixed(2) %> Lei</small>
+                                    <span class="fs-4 fw-bold text-success">Preț Set: <%- set.pretFinal.toFixed(2) %> Lei</span>
+                                </div>
+                                <button class="btn btn-success btn-lg shadow-sm"><i class="bi bi-cart-plus"></i> Adaugă Setul</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="alert alert-warning text-center">Momentan nu există seturi disponibile.</div>
+    <% } %>
+</main>
+
+<%- include("../fragmente/footer") %>

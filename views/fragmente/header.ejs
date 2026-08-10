@@ -15,13 +15,22 @@
         </label>
         <ul class="menu">
             <li><a href="/index#welcome"><i class="fa-solid fa-house"></i> <span class="nav-text">Acasă</span></a></li>
-            <li><a href="/index#ghete-fotbal"><i class="fa-solid fa-box-open"></i> <span class="nav-text">Produse</span></a>
+           <li class="nav-item">
+             <a class="nav-link text-primary fw-bold" href="#" onclick="arataOrar(event)">
+                <i class="bi bi-clock-history"></i> Orar
+             </a>
+            </li>
+            <li><a href="/produse"><i class="fa-solid fa-box-open"></i> <span class="nav-text">Magazin</span></a>
                 <ul class="submenu">
-                    <li><a href="/index#ghete-fotbal">Ghete de fotbal</a></li>
-                    <li><a href="/index#echipamente">Echipamente</a></li>
-                    <li><a href="/index#accesorii">Accesorii</a></li>
+                    <li><a href="/produse?categ=ghete">Ghete de fotbal</a></li>
+                    <li><a href="/produse?categ=mingi">Mingi</a></li>
+                    <li><a href="/produse?categ=echipament">Echipamente</a></li>
+                    <li><a href="/produse?categ=accesorii">Accesorii</a></li>
                 </ul>
             </li>
+
+            <li><a href="/seturi"><i class="fa-solid fa-layer-group"></i> <span class="nav-text">Oferte Seturi</span></a></li>
+
             <li><a href="#"><i class="fa-solid fa-images"></i> <span class="nav-text">Galerii</span></a>
                 <ul class="submenu">
                     <li><a href="/galerie-statica">Galerie Statică</a></li>
@@ -31,6 +40,14 @@
             <li><a href="/despre"><i class="fa-solid fa-info-circle"></i> <span class="nav-text">Despre Noi</span></a></li>
             <li><a href="/index#promotii"><i class="fa-solid fa-tags"></i> <span class="nav-text">Promoții</span></a></li>
             <li><a href="#contact-footer"><i class="fa-solid fa-envelope"></i> <span class="nav-text">Contact</span></a></li>
+            
+            <li class="ms-md-3 mt-2 mt-md-0 d-flex align-items-center">
+                <select id="themeSelect" class="form-select form-select-sm" style="width: auto; cursor: pointer; border-radius: 8px;">
+                    <option value="light">☀️ Light</option>
+                    <option value="dark">🌙 Dark Mode</option>
+                    <option value="fcsb">🔴🔵 FCSB</option>
+                </select>
+            </li>
         </ul>
     </nav>
     <div style="text-align:center; padding: 5px; font-size: 0.9em; background: #222; color: #fff;">
